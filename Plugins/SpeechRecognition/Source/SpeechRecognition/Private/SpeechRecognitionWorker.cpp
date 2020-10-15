@@ -1,5 +1,6 @@
 #include "SpeechRecognition.h"
 #include "SpeechRecognitionWorker.h"
+#include "SpeechRecognitionActor.h"
 
 //General Log
 DEFINE_LOG_CATEGORY(SpeechRecognitionPlugin);
@@ -155,7 +156,7 @@ int16 FSpeechRecognitionWorker::GetCurrentVolume() {
 void FSpeechRecognitionWorker::SetLanguage(ESpeechRecognitionLanguage language) {
 
 	// set Content Path
-	FString contentPath = FPaths::ConvertRelativePathToFull(FPaths::GameContentDir());
+	FString contentPath = FPaths::ConvertRelativePathToFull(FPaths::ProjectContentDir());
 	contentPath_str = std::string(TCHAR_TO_UTF8(*contentPath));
 	std::string languageString;
 	this->language = language;
