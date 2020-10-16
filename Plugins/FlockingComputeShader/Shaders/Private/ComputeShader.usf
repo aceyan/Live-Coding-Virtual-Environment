@@ -1,0 +1,175 @@
+#include "/Engine/Public/Platform.ush"
+
+RWTexture2D<half4> VelocityOutputTexture; //v
+Texture2D<half4> VelocityInput; //v
+RWTexture2D<half4> PositionOutputTexture; //pos
+Texture2D<half4> PositionInput; //pos
+float2 TextureSize;
+float3 RangeMax;
+float3 RangeMin;
+float AlignScaler;
+float CohesionScaler;
+float SeparationScaler;
+
+
+half4 rangeChecker(half4 currentPos, half4 currentVel)
+{
+    half4 finalVelocity = currentVel;
+    //Range = Range / 2;
+    if (currentPos.x >= RangeMax.x)
+    {
+        if (finalVelocity.x > 0)
+        {
+            finalVelocity.x *= -1;
+        }
+    }
+    else if (currentPos.x <= RangeMin.x)
+    {
+        if (finalVelocity.x < 0)
+        {
+            finalVelocity.x *= -1;
+        }
+    }
+
+    if (currentPos.y >= RangeMax.y)
+    {
+        if (finalVelocity.y > 0)
+        {
+            finalVelocity.y *= -1;
+        }
+    }
+    else if (currentPos.y <= RangeMin.y)
+    {
+        if (finalVelocity.y < 0)
+        {
+            finalVelocity.y *= -1;
+        }
+    }
+
+    if (currentPos.z >= RangeMax.z)
+    {
+        if (finalVelocity.z > 0)
+        {
+            finalVelocity.z *= -1;
+        }
+    }
+    else if (currentPos.z <= RangeMin.z)
+    {
+        if (finalVelocity.z < 0)
+        {
+            finalVelocity.z *= -1;
+        }
+    }
+    return finalVelocity;
+}
+
+
+
+
+half3 getAcceleration(uint3 ThreadId, half3 currentPos, half3 currentVel)
+{
+    
+    float maxForce = 0.01;
+    float maxSpeed = 5;
+    //
+    float alignDist = 300;
+    half3 alignTotalVelocity = half3(0, 0, 0);
+    half3 alignAcc = half3(0, 0, 0);
+    float alignNum = 0.0;
+    //
+    float cohesionDist = 600;
+    half3 cohesionTotalVelocity = half3(0, 0, 0);
+    half3 cohesionAcc = half3(0, 0, 0);
+    float cohesionNum = 0.0;
+    //
+    float separationDist = 200;
+    half3 separationTotalVelocity = half3(0, 0, 0);
+    half3 separationAcc = half3(0, 0, 0);
+    float separationNum = 0.0;
+    
+    
+    
+    for (int y = 0; y < int(TextureSize.y); y++)
+    {
+        for (int x = 0; x < int(TextureSize.x); x++)
+        {
+
+            half3 neighborPos = PositionInput.Load(int3(x, y, 0)).xyz;
+            half distance = length(currentPos - neighborPos);
+            if (x != ThreadId.x && y != ThreadId.y)
+            {
+               
+                if (distance < cohesionDist)
+                {
+                    cohesionTotalVelocity += neighborPos;
+                    cohesionNum++;
+                    if (distance < alignDist)
+                    {
+                        alignTotalVelocity += VelocityInput.Load(int3(x, y, 0)).xyz;
+                        alignNum++;
+                        if (distance < separationDist)
+                        {
+                            half3 diff = currentPos - neighborPos;
+                            diff = normalize(diff);
+                            diff /= distance;
+                            separationTotalVelocity += diff;
+                            separationNum++;
+                        }
+                    }
+                    
+                }
+                   
+            }
+        }
+    }
+    if (alignNum > 0.0)
+    {
+        alignTotalVelocity /= alignNum;
+        alignTotalVelocity = normalize(alignTotalVelocity) * maxSpeed;
+        alignAcc = alignTotalVelocity - currentVel;
+        if (length(alignAcc) > maxForce)
+        {
+            alignAcc = normalize(alignAcc) * maxForce;
+        }
+    }
+    
+    if (cohesionNum > 0.0)
+    {
+        cohesionTotalVelocity /= cohesionNum;
+        cohesionTotalVelocity = cohesionTotalVelocity - currentPos;
+        cohesionTotalVelocity = normalize(cohesionTotalVelocity) * maxSpeed;
+        cohesionAcc = cohesionTotalVelocity - currentVel;
+        if (length(cohesionAcc) > maxForce)
+        {
+            cohesionAcc = normalize(cohesionAcc) * maxForce;
+        }
+    }
+    if (separationNum > 0.0)
+    {
+        separationTotalVelocity /= separationNum;
+        separationTotalVelocity = normalize(separationTotalVelocity) * maxSpeed;
+        separationAcc = separationTotalVelocity - currentVel;
+        if (length(separationAcc) > maxForce)
+        {
+            separationAcc = normalize(separationAcc) * maxForce;
+        }
+    }
+    return alignAcc * AlignScaler + cohesionAcc * CohesionScaler + separationAcc * SeparationScaler;
+
+}
+
+[numthreads(THREADGROUPSIZE_X, THREADGROUPSIZE_Y, THREADGROUPSIZE_Z)]
+void MainComputeShader(uint3 ThreadId : SV_DispatchThreadID)
+{
+
+
+    half4 velocity = VelocityInput.Load(int3(ThreadId.x, ThreadId.y, 0));
+    half4 position = PositionInput.Load(int3(ThreadId.x, ThreadId.y, 0));
+   
+    velocity = rangeChecker(position, velocity);
+    velocity.xyz += getAcceleration(ThreadId, position.xyz, velocity.xyz);
+   
+
+    VelocityOutputTexture[ThreadId.xy] = velocity;
+    PositionOutputTexture[ThreadId.xy] = position + velocity;
+}
