@@ -52,6 +52,6 @@ public:
 private:
 	TArray<FFloat16Color> ColorBuffer16;
 	class FTextureRenderTarget2DResource* textureResource;
-	FVector v = FVector(0, 0, 0);
+	//FVector v = FVector(0, 0, 0);
 
 };

@@ -1,0 +1,80 @@
+
+struct RMStrutct
+{
+
+	float SphereSDF(float3 pos)
+	{
+		float dist = length(pos) - 50;
+		return dist;
+	}
+	
+	float BoxSDF( float3 p, float3 b )
+	{
+	  float3 q = abs(p) - b;
+	  return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
+	}
+	
+	float TorusSDF(float3 pos, float2 radius)
+	{
+		float2 r = float2(length(pos.xy) - radius.x, pos.z);
+		return length(r) - radius.y;
+	}
+	
+	float map(float3 pos, float3 sPos, float3 bPos, float smooth)
+	{
+		float dist1 = SphereSDF(pos - sPos);
+		float dist2 =  BoxSDF(pos - bPos,  float3(50,30,20));
+	
+		float dist = opSmoothUnion(dist1, dist2,  smooth);
+		return dist;
+	}
+	
+	float3 Normal(float3 pos, float3 sPos, float3 bPos, float smooth)
+	{
+		float2 offset = float2(0.01, 0);
+		return normalize(float3(
+		map(pos + offset.xyy, sPos, bPos, smooth) -  map(pos - offset.xyy,sPos, bPos, smooth),
+		map(pos + offset.yxy, sPos, bPos, smooth) -  map(pos - offset.yxy, sPos, bPos, smooth),
+		map(pos + offset.yyx, sPos, bPos, smooth) -  map(pos - offset.yyx, sPos, bPos, smooth)
+		));
+	}
+	
+	
+	float opSmoothUnion( float d1, float d2, float k ) 
+	{
+		float h = clamp( 0.5 + 0.5*(d2-d1)/k, 0.0, 1.0 );
+		return lerp( d2, d1, h ) - k*h*(1.0-h);
+	}
+};
+
+RMStrutct RM;
+float4 col = 0;
+float3 pos = WorldPosition;
+float3 normal = 0;
+
+
+
+for (int i = 0; i < MaxSteps; i++)
+{
+	if(SceneDepth < length(pos - CameraPosition)) 
+	break;
+
+	//float dist = sdBoundingBox(pos - ObjectPosition,  float3(30, 25, 20), 2.5 );
+	//float dist2 =  SceneDepth - length(pos - CameraPosition);
+	//float dist2 = GetDistanceToNearestSurfaceGlobal(pos);
+	
+	
+	float dist = RM.map(pos, spherePos, boxPos, Smooth);
+	
+    if(dist < threshold)
+    {
+        col = float4(1, 0,0,1);
+		normal = RM.Normal(pos, spherePos, boxPos, Smooth);
+	
+        break;
+    }
+    pos += CameraVector * dist;//need
+   
+}
+
+return float4(normal, col.a);
