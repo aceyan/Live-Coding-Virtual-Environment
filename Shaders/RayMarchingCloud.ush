@@ -77,22 +77,28 @@ struct RMStrutct
         return lerp(CenterColor, BaseColor, pow(abs(dist / radius), cof));
     }
 	
-    float4 raymarching(float3 ro, float3 rd, float t, float radius, float3 spherePos, float DensityScalor, float iTime, Texture2D noiseTex, SamplerState TexSampler)
+    float4 raymarching(float3 ro, float3 rd, float t, float radius, float3 spherePos, float DensityScalor, float iTime, Texture3D noiseTex, SamplerState TexSampler)
     {
-        float MarchStep = 0.5;
+        float MarchStep = 1.0;
         float accumdist = 0.0;
         float4 finalColor = float4(0, 0, 0, 0);
         float3 pos = ro + rd * t;
+        //pos = pos - spherePos;//transfer to local pos
+        
         //int totalStep = 2.0 * radius / MarchStep;
-        int totalStep = 200;
+        //int totalStep = 200;
         for (int i = 0; i < 100; i++)
         {
             float dist = length(pos - spherePos);
+            //float dist = length(pos);
             if (dist > radius + 0.01)
                 break;
         
-            float den = density(pos, dist, radius, DensityScalor, iTime, noiseTex, TexSampler);
+            //float den = density(pos, dist, radius, DensityScalor, iTime, noiseTex, TexSampler);
             //den = noise(pos, noiseTex, TexSampler) * 0.1;
+            float3 moveOffset = iTime * 0.15 * float3(1, 1, 1);
+            float den = Texture3DSample(noiseTex, TexSampler, (pos - spherePos) / radius + moveOffset).
+            r * DensityScalor;
             accumdist += den * MarchStep;
         
         
