@@ -64,10 +64,11 @@ public:
 	// Call this whenever you have new parameters to share. You could set this up to update different sets of properties at
 	// different intervals to save on locking and GPU transfer time.
 	void UpdateParameters(FShaderUsageExampleParameters& DrawParameters);
-
-private:
 	TRefCountPtr<IPooledRenderTarget> VelocityOutput;
 	TRefCountPtr<IPooledRenderTarget> PositionOutput;
+
+private:
+	
 	FShaderUsageExampleParameters CachedShaderUsageExampleParameters;
 	FDelegateHandle OnPostResolvedSceneColorHandle;
 	FCriticalSection RenderEveryFrameLock;

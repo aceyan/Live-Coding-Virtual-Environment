@@ -2,7 +2,7 @@
 
 
 #include "CSTestActor.h"
-#include "FlockingComputeShader.h"
+#include "FlockingComputeShaderObj.h"
 
 // Sets default values
 ACSTestActor::ACSTestActor()
@@ -18,7 +18,7 @@ ACSTestActor::ACSTestActor()
 void ACSTestActor::BeginPlay()
 {
 	Super::BeginPlay();
-	FFlockingComputeShader::Get().BeginRendering();
+	shaderObj.BeginRendering();
 
 	if (myTexture != NULL) textureResource = (FTextureRenderTarget2DResource*)myTexture->Resource;
 	
@@ -26,7 +26,7 @@ void ACSTestActor::BeginPlay()
 
 void ACSTestActor::BeginDestroy()
 {
-	FFlockingComputeShader::Get().EndRendering();
+	shaderObj.EndRendering();
 	Super::BeginDestroy();
 }
 
@@ -44,7 +44,7 @@ void ACSTestActor::Tick(float DeltaTime)
 		DrawParameters.CohesionScaler = CohesionForceScaler;
 		DrawParameters.SeparationScaler = SeparationForceScaler;
 	}
-	FFlockingComputeShader::Get().UpdateParameters(DrawParameters);
+	shaderObj.UpdateParameters(DrawParameters);
 
 
 	

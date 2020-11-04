@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "FlockingComputeShaderObj.h"
 #include "CSTestActor.generated.h"
+
 //used to apply compute shader and update renderTarget
 UCLASS()
 class MYVRDEMO_API ACSTestActor : public AActor
@@ -53,5 +55,5 @@ private:
 	TArray<FFloat16Color> ColorBuffer16;
 	class FTextureRenderTarget2DResource* textureResource;
 	//FVector v = FVector(0, 0, 0);
-
+	FlockingComputeShaderObj shaderObj;
 };
