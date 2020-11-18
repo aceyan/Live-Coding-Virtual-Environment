@@ -1,0 +1,13 @@
+#JSGF V1.0;
+
+grammar check;
+
+public <final_rule> = (<operation> <digit>) | (<action> <who>);
+
+<operation> = ( fuck | suck );
+
+<digit> = ( it | you );
+
+<action> = ( change );
+
+<who> = ( mode );

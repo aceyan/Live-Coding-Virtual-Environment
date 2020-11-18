@@ -1,0 +1,13 @@
+#JSGF V1.0;
+
+grammar check;
+
+public <final_rule> =   (<action> <what>) | (<action>  <color> <what>);
+
+
+
+<action> = ( create );
+
+<color> = ( red | blue | white | black | yellow | green | purple | orange );
+
+<what> = ( cube | sphere | pillar );
