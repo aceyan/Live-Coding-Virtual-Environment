@@ -1,0 +1,72 @@
+struct SDFs
+{
+	float sdSphere(float3 pos, float s)
+	{
+		float dist = length(pos) - s;
+		return dist;
+	}
+	
+	float sdBox( float3 p, float3 b )
+	{
+	  float3 q = abs(p) - b;
+	  return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
+	}
+	
+	
+	float sdRoundBox( float3 p, float3 b, float r )
+	{
+	  float3 q = abs(p) - b;
+	  return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0) - r;
+	}
+	
+
+	
+	float sdTorus( float3 p, float2 t )
+	{
+	  float2 q = float2(length(p.xz)-t.x,p.y);
+	  return length(q)-t.y;
+	}
+	
+	float sdLink( float3 p, float le, float r1, float r2 )
+	{
+	  float3 q = float3( p.x, max(abs(p.y)-le,0.0), p.z );
+	  return length(float2(length(q.xy)-r1,q.z)) - r2;
+	}
+	
+	/*
+	float sdCylinder( float3 p, float3 c )
+	{
+	  return length(p.xz-c.xy)-c.z;
+	}
+	*/
+	
+	float sdCappedCylinder( float3 p, float h, float r )
+	{
+	  float2 d = abs(float2(length(p.xz),p.y)) - float2(h,r);
+	  return min(max(d.x,d.y),0.0) + length(max(d,0.0));
+	}
+	
+	float sdCone( float3 p, float2 c, float h )
+	{
+	  // c is the sin/cos of the angle, h is height
+	  // Alternatively pass q instead of (c,h),
+	  // which is the point at the base in 2D
+	  float2 q = h*float2(c.x/c.y,-1.0);
+		
+	  float2 w = float2( length(p.xz), p.y );
+	  float2 a = w - q*clamp( dot(w,q)/dot(q,q), 0.0, 1.0 );
+	  float2 b = w - q*float2( clamp( w.x/q.x, 0.0, 1.0 ), 1.0 );
+	  float k = sign( q.y );
+	  float d = min(dot( a, a ),dot(b, b));
+	  float s = max( k*(w.x*q.y-w.y*q.x),k*(w.y-q.y)  );
+	  return sqrt(d)*sign(s);
+	}
+	
+	
+	float sdCapsule( float3 p, float3 a, float3 b, float r )
+	{
+	  float3 pa = p - a, ba = b - a;
+	  float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
+	  return length( pa - ba*h ) - r;
+	}
+};

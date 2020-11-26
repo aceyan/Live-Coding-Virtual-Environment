@@ -1,0 +1,11 @@
+struct Functions
+{
+	float3 func1()
+	{
+		return float3(1.0,0.0,0.0);
+	}
+	float3 func2()
+	{
+		return float3(1.0,1.0,0.0);
+	}
+};

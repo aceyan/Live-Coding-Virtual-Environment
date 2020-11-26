@@ -1,0 +1,5 @@
+#include  "/Project/CommonTest.ush"
+
+Functions functions;
+float3 color = functions.func2();
+return color;
