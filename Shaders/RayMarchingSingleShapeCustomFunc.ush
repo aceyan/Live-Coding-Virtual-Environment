@@ -83,9 +83,38 @@ for (int i = 0; i < pMaxSteps; i++)
     {
         col = float4(1, 0,0,1);
 		
-		///todo add normal
-		//normal = RM.Normal(pos, spherePos, boxPos, Smooth);
-	
+		if(pGeometryType == 0.0)
+		{
+			normal = sdfLibrary.sdSphereNormal(pos - pObjectPosition, pSphereRadius);
+		}
+		else if(pGeometryType == 1.0)
+		{
+			normal = sdfLibrary.sdBoxNormal(pos - pObjectPosition, pBoxDimension);
+		}
+		else if(pGeometryType == 2.0)
+		{
+			normal = sdfLibrary.sdRoundBoxNormal(pos - pObjectPosition, pBoxDimension, pRound);
+		}
+		else if(pGeometryType == 3.0)
+		{
+			normal = sdfLibrary.sdTorusNormal(pos - pObjectPosition, pTorusDimension);
+		}
+		else if(pGeometryType == 4.0)
+		{
+			normal = sdfLibrary.sdLinkNormal(pos - pObjectPosition,  pLinkLength,  pLinkRadius1,  pLinkRadius2);
+		}
+		else if(pGeometryType == 5.0)
+		{
+			normal = sdfLibrary.sdCappedCylinderNormal( pos - pObjectPosition, pCylinderRadius, pCylinderLength);
+		}
+		else if(pGeometryType == 6.0)
+		{
+			normal = sdfLibrary.sdConeNormal( pos - pObjectPosition, pConeAngle, pConeLength);
+		}
+		else if(pGeometryType == 7.0)
+		{
+			normal = sdfLibrary.sdCapsuleNormal( pos - pObjectPosition,  pCapsuleDimension1,  pCapsuleDimension2,  pCapsuleScalar);
+		}
         break;
     }
     pos += pCameraVector * dist;//need

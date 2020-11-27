@@ -6,11 +6,33 @@ struct SDFs
 		return dist;
 	}
 	
+	float3 sdSphereNormal(float3 pos, float s)
+	{
+		float2 offset = float2(0.01, 0);
+		return normalize(float3(
+		sdSphere(pos + offset.xyy, s) -  sdSphere(pos - offset.xyy,s),
+		sdSphere(pos + offset.yxy, s) -  sdSphere(pos - offset.yxy, s),
+		sdSphere(pos + offset.yyx, s) -  sdSphere(pos - offset.yyx, s)
+		));
+	}
+	
+	
 	float sdBox( float3 p, float3 b )
 	{
 	  float3 q = abs(p) - b;
 	  return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
 	}
+	
+	float3 sdBoxNormal(float3 pos, float3 b)
+	{
+		float2 offset = float2(0.01, 0);
+		return normalize(float3(
+		sdBox(pos + offset.xyy, b) -  sdBox(pos - offset.xyy,b),
+		sdBox(pos + offset.yxy, b) -  sdBox(pos - offset.yxy, b),
+		sdBox(pos + offset.yyx, b) -  sdBox(pos - offset.yyx, b)
+		));
+	}
+	
 	
 	
 	float sdRoundBox( float3 p, float3 b, float r )
@@ -19,7 +41,15 @@ struct SDFs
 	  return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0) - r;
 	}
 	
-
+	float3 sdRoundBoxNormal(float3 p, float3 b, float r)
+	{
+		float2 offset = float2(0.01, 0);
+		return normalize(float3(
+		sdRoundBox(p + offset.xyy, b , r) -  sdRoundBox(p - offset.xyy, b , r),
+		sdRoundBox(p + offset.yxy, b , r) -  sdRoundBox(p - offset.yxy, b , r),
+		sdRoundBox(p + offset.yyx, b , r) -  sdRoundBox(p - offset.yyx, b , r)
+		));
+	}
 	
 	float sdTorus( float3 p, float2 t )
 	{
@@ -27,10 +57,30 @@ struct SDFs
 	  return length(q)-t.y;
 	}
 	
+	float3 sdTorusNormal(float3 p, float2 t)
+	{
+		float2 offset = float2(0.01, 0);
+		return normalize(float3(
+		sdTorus(p + offset.xyy, t) -  sdTorus(p - offset.xyy, t),
+		sdTorus(p + offset.yxy, t) -  sdTorus(p - offset.yxy, t),
+		sdTorus(p + offset.yyx, t) -  sdTorus(p - offset.yyx, t)
+		));
+	}
+	
 	float sdLink( float3 p, float le, float r1, float r2 )
 	{
 	  float3 q = float3( p.x, max(abs(p.y)-le,0.0), p.z );
 	  return length(float2(length(q.xy)-r1,q.z)) - r2;
+	}
+	
+	float3 sdLinkNormal(float3 p, float le, float r1, float r2 )
+	{
+		float2 offset = float2(0.01, 0);
+		return normalize(float3(
+		sdLink(p + offset.xyy, le, r1, r2) -  sdLink(p - offset.xyy, le, r1, r2),
+		sdLink(p + offset.yxy, le, r1, r2) -  sdLink(p - offset.yxy, le, r1, r2),
+		sdLink(p + offset.yyx, le, r1, r2) -  sdLink(p - offset.yyx, le, r1, r2)
+		));
 	}
 	
 	/*
@@ -44,6 +94,16 @@ struct SDFs
 	{
 	  float2 d = abs(float2(length(p.xz),p.y)) - float2(h,r);
 	  return min(max(d.x,d.y),0.0) + length(max(d,0.0));
+	}
+	
+	float3 sdCappedCylinderNormal(float3 p, float h, float r )
+	{
+		float2 offset = float2(0.01, 0);
+		return normalize(float3(
+		sdCappedCylinder(p + offset.xyy, h, r) -  sdCappedCylinder(p - offset.xyy, h, r),
+		sdCappedCylinder(p + offset.yxy, h, r) -  sdCappedCylinder(p - offset.yxy, h, r),
+		sdCappedCylinder(p + offset.yyx, h, r) -  sdCappedCylinder(p - offset.yyx, h, r)
+		));
 	}
 	
 	float sdCone( float3 p, float2 c, float h )
@@ -62,11 +122,31 @@ struct SDFs
 	  return sqrt(d)*sign(s);
 	}
 	
+	float3 sdConeNormal(float3 p, float2 c, float h )
+	{
+		float2 offset = float2(0.01, 0);
+		return normalize(float3(
+		sdCone(p + offset.xyy, c, h) -  sdCone(p - offset.xyy, c, h),
+		sdCone(p + offset.yxy, c, h) -  sdCone(p - offset.yxy, c, h),
+		sdCone(p + offset.yyx, c, h) -  sdCone(p - offset.yyx, c, h)
+		));
+	}
+	
 	
 	float sdCapsule( float3 p, float3 a, float3 b, float r )
 	{
 	  float3 pa = p - a, ba = b - a;
 	  float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
 	  return length( pa - ba*h ) - r;
+	}
+	
+	float3 sdCapsuleNormal(float3 p, float3 a, float3 b, float r  )
+	{
+		float2 offset = float2(0.01, 0);
+		return normalize(float3(
+		sdCapsule(p + offset.xyy, a, b, r) -  sdCapsule(p - offset.xyy, a, b, r),
+		sdCapsule(p + offset.yxy, a, b, r) -  sdCapsule(p - offset.yxy, a, b, r),
+		sdCapsule(p + offset.yyx, a, b, r) -  sdCapsule(p - offset.yyx, a, b, r)
+		));
 	}
 };
