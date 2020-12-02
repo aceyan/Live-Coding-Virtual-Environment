@@ -2,16 +2,29 @@
 
 grammar check;
 
-public <final_rule> =   (<action> [ <color> ] <what>) |  (<action>  <rayMarchingToken> [ <color> ] <rayMarchingObjects>);
+/**
+  * commands for creating objects
+  * @example length = 3: create red cube
+  * @example length = 5: create ray marching red sphere
+  * @example length = 3: shape/color to red/cube/box
+  * @example length = 2: turn smller/bigger
+  */
+
+public <final_rule> =   (create [ <color> ] <meshBasedObjects>) |  
+						(create  <rayMarchingToken> [ <color> ] <rayMarchingObjects>) | 
+						(shape to ( <meshBasedObjects> | <rayMarchingObjects> ) ) |
+						(color to <color>) |
+						(turn (smaller | bigger) );
 
 
 
-<action> = ( create );
 
 <color> = ( red | blue | white | black | yellow | green | purple | orange );
 
-<what> = ( cube | sphere | pillar );
+<meshBasedObjects> = ( cube | sphere | pillar );
 
 <rayMarchingToken> = (ray marching);
 
 <rayMarchingObjects> = ( sphere | box | roundbox | torus | link | cylinder | cone |  capsule );
+
+<property> = ( shape | color );
