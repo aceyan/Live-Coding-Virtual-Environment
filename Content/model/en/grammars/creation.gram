@@ -4,17 +4,21 @@ grammar check;
 
 /**
   * commands for creating objects
-  * @example length = 3: create red cube
-  * @example length = 5: create ray marching red sphere
+  * @example length = 3: new red cube
+  * @example length = 5: new ray marching red sphere
+  * @example length = 2: new union/subtraction/intersection
   * @example length = 3: shape/color to red/cube/box
   * @example length = 2: turn smller/bigger
+  
+  * to hard to say   @example length = 4: new sphere union box
   */
 
-public <final_rule> =   (create [ <color> ] <meshBasedObjects>) |  
-						(create  <rayMarchingToken> [ <color> ] <rayMarchingObjects>) | 
+public <final_rule> =   (new [ <color> ] <meshBasedObjects>) |  
+						(new  <rayMarchingToken> [ <color> ] <rayMarchingObjects>) | 
 						(shape to ( <meshBasedObjects> | <rayMarchingObjects> ) ) |
 						(color to <color>) |
-						(turn (smaller | bigger) );
+						(turn (smaller | bigger) ) |
+						(new <operations>);
 
 
 
@@ -28,3 +32,7 @@ public <final_rule> =   (create [ <color> ] <meshBasedObjects>) |
 <rayMarchingObjects> = ( sphere | box | roundbox | torus | link | cylinder | cone |  capsule );
 
 <property> = ( shape | color );
+
+<operations> = ( union | subtraction | intersection );
+//(new  <rayMarchingObjects> <operation> <rayMarchingObjects>)
+//<operation> = ( union | subtract | intersect );
