@@ -13,17 +13,17 @@ grammar check;
   * to hard to say   @example length = 4: new sphere union box
   */
 
-public <final_rule> =   (new [ <color> ] <meshBasedObjects>) |  
-						(new  <rayMarchingToken> [ <color> ] <rayMarchingObjects>) | 
+public <final_rule> =   (new [ <colors> ] <meshBasedObjects>) |  
+						(new  <rayMarchingToken> [ <colors> ] <rayMarchingObjects>) | 
 						(shape to ( <meshBasedObjects> | <rayMarchingObjects> ) ) |
-						(color to <color>) |
+						(color to <colors>) |
 						(turn (smaller | bigger) ) |
-						(new <operations>);
+						(create <operations>);
 
 
 
 
-<color> = ( red | blue | white | black | yellow | green | purple | orange );
+<colors> = ( red | blue | white | black | yellow | green | purple | orange );
 
 <meshBasedObjects> = ( cube | sphere | pillar );
 
@@ -31,8 +31,8 @@ public <final_rule> =   (new [ <color> ] <meshBasedObjects>) |
 
 <rayMarchingObjects> = ( sphere | box | roundbox | torus | link | cylinder | cone |  capsule );
 
-<property> = ( shape | color );
-
 <operations> = ( union | subtraction | intersection );
+
+//<property> = ( shape | color );
 //(new  <rayMarchingObjects> <operation> <rayMarchingObjects>)
 //<operation> = ( union | subtract | intersect );
