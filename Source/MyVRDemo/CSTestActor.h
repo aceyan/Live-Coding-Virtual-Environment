@@ -38,8 +38,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking)
 		float AlignForceScaler;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking)
-		class UTextureRenderTarget* myTexture;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking)
 		TArray<AActor*> actorList;
@@ -52,8 +50,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 private:
-	TArray<FFloat16Color> ColorBuffer16;
-	class FTextureRenderTarget2DResource* textureResource;
-	//FVector v = FVector(0, 0, 0);
+	TArray<FFloat16Color> posColorBuffer16;
+	TArray<FFloat16Color> velColorBuffer16;
+	class FTextureRenderTarget2DResource* posTextureResource;
+	class FTextureRenderTarget2DResource* velTextureResource;
 	FlockingComputeShaderObj shaderObj;
 };

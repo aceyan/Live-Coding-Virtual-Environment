@@ -3,6 +3,7 @@
 
 #include "CSTestActor.h"
 #include "FlockingComputeShaderObj.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 ACSTestActor::ACSTestActor()
@@ -20,7 +21,8 @@ void ACSTestActor::BeginPlay()
 	Super::BeginPlay();
 	shaderObj.BeginRendering();
 
-	if (myTexture != NULL) textureResource = (FTextureRenderTarget2DResource*)myTexture->Resource;
+	if (PositionRenderTarget != NULL) posTextureResource = (FTextureRenderTarget2DResource*)PositionRenderTarget->Resource;
+	if (VelocityRenderTarget != NULL) velTextureResource = (FTextureRenderTarget2DResource*)VelocityRenderTarget->Resource;
 	
 }
 
@@ -48,29 +50,34 @@ void ACSTestActor::Tick(float DeltaTime)
 
 
 	
-	if (myTexture != NULL)
+	if (posTextureResource != NULL)
 	{
 		
 		//fetch position buffer from rendertarget to cpu
-		if (textureResource->ReadFloat16Pixels(ColorBuffer16))
+		if (posTextureResource->ReadFloat16Pixels(posColorBuffer16) && velTextureResource->ReadFloat16Pixels(velColorBuffer16))
 		{
 		
 
-			for (int i = 0; i < actorList.Num() && i < ColorBuffer16.Num(); i++)
+			for (int i = 0; i < actorList.Num() && i < posColorBuffer16.Num(); i++)
 			{
-				float x = ColorBuffer16[i].R.GetFloat();
-				float y = ColorBuffer16[i].G.GetFloat();
-				float z = ColorBuffer16[i].B.GetFloat();
-				//UE_LOG(LogTemp, Warning, TEXT("f is  %f"), f);
-				//SetActorLocation(FVector(x, y, z));//??? 
-
-
 				AActor* p = actorList[i];
 
-				//bottle neck, it is slow!
+				float x = posColorBuffer16[i].R.GetFloat();
+				float y = posColorBuffer16[i].G.GetFloat();
+				float z = posColorBuffer16[i].B.GetFloat();
+				
 				p->SetActorLocation(FVector(x, y, z));
-				//p->SetActorLocation(v);
-				//p->setactor
+
+
+				float vx = velColorBuffer16[i].R.GetFloat();
+				float vy = velColorBuffer16[i].G.GetFloat();
+				float vz = velColorBuffer16[i].B.GetFloat();
+
+				FVector velocity = FVector(vx, vy, vz);
+
+
+				FRotator PlayerRot = UKismetMathLibrary::FindLookAtRotation(p->GetActorLocation(), p->GetActorLocation() + velocity);
+				p->SetActorRotation(PlayerRot);
 			}
 			
 
