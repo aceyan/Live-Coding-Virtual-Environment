@@ -18,6 +18,9 @@ struct FShaderUsageExampleParameters
 	float AlignScaler;
 	float CohesionScaler;
 	float SeparationScaler;
+	float MaxForce;
+	float MaxSpeed;
+
 
 	FIntPoint GetRenderTargetSize() const
 	{

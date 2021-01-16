@@ -10,6 +10,8 @@ float3 RangeMin;
 float AlignScaler;
 float CohesionScaler;
 float SeparationScaler;
+float MaxForce;
+float MaxSpeed;
 
 
 half4 rangeChecker(half4 currentPos, half4 currentVel)
@@ -69,8 +71,6 @@ half4 rangeChecker(half4 currentPos, half4 currentVel)
 half3 getAcceleration(uint3 ThreadId, half3 currentPos, half3 currentVel)
 {
     
-    float maxForce = 0.01;
-    float maxSpeed = 5;
     //
     float alignDist = 300;
     half3 alignTotalVelocity = half3(0, 0, 0);
@@ -125,11 +125,11 @@ half3 getAcceleration(uint3 ThreadId, half3 currentPos, half3 currentVel)
     if (alignNum > 0.0)
     {
         alignTotalVelocity /= alignNum;
-        alignTotalVelocity = normalize(alignTotalVelocity) * maxSpeed;
+        alignTotalVelocity = normalize(alignTotalVelocity) * MaxSpeed;
         alignAcc = alignTotalVelocity - currentVel;
-        if (length(alignAcc) > maxForce)
+        if (length(alignAcc) > MaxForce)
         {
-            alignAcc = normalize(alignAcc) * maxForce;
+            alignAcc = normalize(alignAcc) * MaxForce;
         }
     }
     
@@ -137,21 +137,21 @@ half3 getAcceleration(uint3 ThreadId, half3 currentPos, half3 currentVel)
     {
         cohesionTotalVelocity /= cohesionNum;
         cohesionTotalVelocity = cohesionTotalVelocity - currentPos;
-        cohesionTotalVelocity = normalize(cohesionTotalVelocity) * maxSpeed;
+        cohesionTotalVelocity = normalize(cohesionTotalVelocity) * MaxSpeed;
         cohesionAcc = cohesionTotalVelocity - currentVel;
-        if (length(cohesionAcc) > maxForce)
+        if (length(cohesionAcc) > MaxForce)
         {
-            cohesionAcc = normalize(cohesionAcc) * maxForce;
+            cohesionAcc = normalize(cohesionAcc) * MaxForce;
         }
     }
     if (separationNum > 0.0)
     {
         separationTotalVelocity /= separationNum;
-        separationTotalVelocity = normalize(separationTotalVelocity) * maxSpeed;
+        separationTotalVelocity = normalize(separationTotalVelocity) * MaxSpeed;
         separationAcc = separationTotalVelocity - currentVel;
-        if (length(separationAcc) > maxForce)
+        if (length(separationAcc) > MaxForce)
         {
-            separationAcc = normalize(separationAcc) * maxForce;
+            separationAcc = normalize(separationAcc) * MaxForce;
         }
     }
     return alignAcc * AlignScaler + cohesionAcc * CohesionScaler + separationAcc * SeparationScaler;

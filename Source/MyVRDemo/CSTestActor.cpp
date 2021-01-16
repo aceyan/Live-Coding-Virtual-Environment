@@ -45,6 +45,8 @@ void ACSTestActor::Tick(float DeltaTime)
 		DrawParameters.AlignScaler = AlignForceScaler;
 		DrawParameters.CohesionScaler = CohesionForceScaler;
 		DrawParameters.SeparationScaler = SeparationForceScaler;
+		DrawParameters.MaxForce = MaxForce;
+		DrawParameters.MaxSpeed = MaxSpeed;
 	}
 	shaderObj.UpdateParameters(DrawParameters);
 

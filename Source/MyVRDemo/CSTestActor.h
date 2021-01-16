@@ -29,6 +29,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking, Meta = (ExposeOnSpawn = "true"))
 		FVector RangeMin;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking, Meta = (ExposeOnSpawn = "true"))
+		float MaxForce = 0.01;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking, Meta = (ExposeOnSpawn = "true"))
+		float MaxSpeed = 5;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking)
 		float SeparationForceScaler;
 

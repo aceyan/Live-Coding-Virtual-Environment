@@ -30,6 +30,8 @@ public:
 		SHADER_PARAMETER(float, AlignScaler)
 		SHADER_PARAMETER(float, CohesionScaler)
 		SHADER_PARAMETER(float, SeparationScaler)
+		SHADER_PARAMETER(float, MaxForce)
+		SHADER_PARAMETER(float, MaxSpeed)
 	END_SHADER_PARAMETER_STRUCT()
 
 public:
@@ -70,6 +72,8 @@ void FComputeShaderExample::RunComputeShader_RenderThread(FRHICommandListImmedia
 	PassParameters.AlignScaler = DrawParameters.AlignScaler;
 	PassParameters.CohesionScaler = DrawParameters.CohesionScaler;
 	PassParameters.SeparationScaler = DrawParameters.SeparationScaler;
+	PassParameters.MaxForce = DrawParameters.MaxForce;
+	PassParameters.MaxSpeed = DrawParameters.MaxSpeed;
 
 	TShaderMapRef<FComputeShaderExampleCS> ComputeShader(GetGlobalShaderMap(GMaxRHIFeatureLevel));
 	FComputeShaderUtils::Dispatch(RHICmdList, ComputeShader, PassParameters, 
