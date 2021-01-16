@@ -22,7 +22,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	class UMaterialInstanceDynamic* DrawMatInstance;
+	
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Flocking")
@@ -33,6 +33,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flocking")
 		class UMaterial* DrawMat;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flocking")
+		class UMaterialInstanceDynamic* DrawMatInstance;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flocking")
 		int InstanceNum;

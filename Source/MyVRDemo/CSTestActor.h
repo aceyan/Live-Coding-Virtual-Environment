@@ -23,10 +23,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking)
 		class UTextureRenderTarget2D* PositionRenderTarget;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking, Meta = (ExposeOnSpawn = "true"))
 		FVector RangeMax;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking, Meta = (ExposeOnSpawn = "true"))
 		FVector RangeMin;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking)
