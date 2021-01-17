@@ -37,7 +37,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flocking")
 		class UMaterialInstanceDynamic* DrawMatInstance;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flocking")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Flocking", Meta = (ExposeOnSpawn = "true"))
 		int InstanceNum;
 
 	UFUNCTION(BlueprintCallable)
