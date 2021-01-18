@@ -12,6 +12,7 @@ float CohesionScaler;
 float SeparationScaler;
 float MaxForce;
 float MaxSpeed;
+float ObjNum;//number of objects
 
 
 half4 rangeChecker(half4 currentPos, half4 currentVel)
@@ -88,12 +89,12 @@ half3 getAcceleration(uint3 ThreadId, half3 currentPos, half3 currentVel)
     float separationNum = 0.0;
     
     
-    
+    float num = 0;
     for (int y = 0; y < int(TextureSize.y); y++)
     {
         for (int x = 0; x < int(TextureSize.x); x++)
         {
-
+            
             half3 neighborPos = PositionInput.Load(int3(x, y, 0)).xyz;
             half distance = length(currentPos - neighborPos);
             if (x != ThreadId.x && y != ThreadId.y)
@@ -120,7 +121,14 @@ half3 getAcceleration(uint3 ThreadId, half3 currentPos, half3 currentVel)
                 }
                    
             }
+            
+            num++;
+            if (num >= ObjNum)
+                break;
+
         }
+        if (num >= ObjNum)
+            break;
     }
     if (alignNum > 0.0)
     {

@@ -35,6 +35,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking, Meta = (ExposeOnSpawn = "true"))
 		float MaxSpeed = 5;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking, Meta = (ExposeOnSpawn = "true"))
+		float ObjNum = 1024;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ComputeShaderFlocking)
 		float SeparationForceScaler;
 

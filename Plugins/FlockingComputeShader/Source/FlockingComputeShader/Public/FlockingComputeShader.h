@@ -20,6 +20,7 @@ struct FShaderUsageExampleParameters
 	float SeparationScaler;
 	float MaxForce;
 	float MaxSpeed;
+	float ObjNum;
 
 
 	FIntPoint GetRenderTargetSize() const
