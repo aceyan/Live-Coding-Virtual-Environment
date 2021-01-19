@@ -1,0 +1,27 @@
+#JSGF V1.0;
+
+grammar check;
+
+/**
+  * commands when selecting objects
+  * @example length = 3: shape/color to red/cube/box
+  * @example length = 2: turn smller/bigger
+  */
+
+public <final_rule> =   (shape to ( <meshBasedObjects> | <rayMarchingObjects> ) ) |
+						(color to <colors>) |
+						(turn (smaller | bigger) ) ;
+						
+
+
+
+
+<colors> = ( red | blue | white | black | yellow | green | purple | orange );
+
+<meshBasedObjects> = ( cube | sphere | pillar );
+
+<rayMarchingObjects> = ( sphere | box | roundbox | torus | link | cylinder | cone |  capsule );
+
+//<property> = ( shape | color );
+//(new  <rayMarchingObjects> <operation> <rayMarchingObjects>)
+//<operation> = ( union | subtract | intersect );
