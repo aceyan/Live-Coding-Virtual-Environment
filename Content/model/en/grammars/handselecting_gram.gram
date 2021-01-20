@@ -6,11 +6,13 @@ grammar check;
   * commands when selecting objects
   * @example length = 3: shape/color to red/cube/box
   * @example length = 2: turn smller/bigger
+  * @example length = 3: (align | cohesion | separation) force ( increase | decrease )
   */
 
 public <final_rule> =   (shape to ( <meshBasedObjects> | <rayMarchingObjects> ) ) |
 						(color to <colors>) |
-						(turn (smaller | bigger) ) ;
+						(turn (smaller | bigger) ) |
+						( (align | cohesion | separation) force ( increase | decrease ) );
 						
 
 

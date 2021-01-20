@@ -6,13 +6,17 @@ grammar check;
   * commands for creating objects
   * @example length = 3: new red cube
   * @example length = 5: new ray marching red sphere
-  * @example length = 2: new union/subtraction/intersection
+  * @example length = 2: create union/subtraction/intersection
+  * @example length = 4: new small/big flocking NULL
+  * @example length = 6: new small/big flocking with two hunderd
   * to hard to say   @example length = 4: new sphere union box
   */
 
 public <final_rule> =   (new [ <colors> ] <meshBasedObjects>) |  
 						(new  <rayMarchingToken> [ <colors> ] <rayMarchingObjects>) | 
-						(create <operations>);
+						(create <operations>) |
+						(new area fog) |
+						(new (small | big) flocking [ with <digit> hundred ] );
 
 
 
@@ -26,6 +30,8 @@ public <final_rule> =   (new [ <colors> ] <meshBasedObjects>) |
 <rayMarchingObjects> = ( sphere | box | roundbox | torus | link | cylinder | cone |  capsule );
 
 <operations> = ( union | subtraction | intersection );
+
+<digit> = ( one | two | three | four | five | six | seven | eight | nine | zero );
 
 //<property> = ( shape | color );
 //(new  <rayMarchingObjects> <operation> <rayMarchingObjects>)
