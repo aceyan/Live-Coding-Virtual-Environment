@@ -5,18 +5,19 @@ grammar check;
 /**
   * commands for creating objects
   * @example length = 3: new red cube
+  * @example length = 3: new area fog
   * @example length = 5: new ray marching red sphere
   * @example length = 2: create union/subtraction/intersection
   * @example length = 4: new small/big flocking NULL
-  * @example length = 6: new small/big flocking with two hunderd
+  * @example length >= 6 : new small/big flocking with two hunderd
   * to hard to say   @example length = 4: new sphere union box
   */
 
 public <final_rule> =   (new [ <colors> ] <meshBasedObjects>) |  
-						(new  <rayMarchingToken> [ <colors> ] <rayMarchingObjects>) | 
+						(new <rayMarchingToken> [ <colors> ] <rayMarchingObjects>) | 
 						(create <operations>) |
 						(new area fog) |
-						(new (small | big) flocking [ with <digit> hundred ] );
+						(new (small | big) flocking [ for <number> ] );
 
 
 
@@ -27,11 +28,18 @@ public <final_rule> =   (new [ <colors> ] <meshBasedObjects>) |
 
 <rayMarchingToken> = (ray marching);
 
+<MeshBasedToken> = ( mesh );
+
 <rayMarchingObjects> = ( sphere | box | roundbox | torus | link | cylinder | cone |  capsule );
 
 <operations> = ( union | subtraction | intersection );
 
 <digit> = ( one | two | three | four | five | six | seven | eight | nine | zero );
+
+<number> = (one | two | three | four | five | six | seven | eight |
+ nine | ten | eleven | twelve | thirteen | fourteen | fifteen | 
+ sixteen | seventeen | eighteen | nineteen | twenty | thirty | forty | 
+ fifty | sixty  | seventy | eighty | ninety | hundred | thousand )+;
 
 //<property> = ( shape | color );
 //(new  <rayMarchingObjects> <operation> <rayMarchingObjects>)
