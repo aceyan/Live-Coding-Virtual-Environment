@@ -1,0 +1,14 @@
+#JSGF V1.0;
+
+grammar check;
+
+/**
+  * commands when selecting objects
+  * @example length = 3: query mesh based
+  */
+
+public <final_rule> =   query <Tags>;
+						
+
+
+<Tags> = ( mesh based | ray marching | big flocking | small flocking | area fog );
