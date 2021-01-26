@@ -4,15 +4,17 @@ grammar check;
 
 /**
   * commands when selecting objects
-  * @example length = 3: shape/color to red/cube/box
   * @example length = 2: turn smller/bigger
+  * @example length = 2: tag apple
   * @example length = 3: (align | cohesion | separation) force ( increase | decrease )
+  * @example length = 3: shape/color to red/cube/box
   */
 
 public <final_rule> =   (shape to ( <meshBasedObjects> | <rayMarchingObjects> ) ) |
 						(color to <colors>) |
 						(turn (smaller | bigger) ) |
-						( (align | cohesion | separation) force ( increase | decrease ) );
+						( (align | cohesion | separation) force ( increase | decrease ) ) |
+						(tag <Tags>);
 						
 
 
@@ -23,6 +25,8 @@ public <final_rule> =   (shape to ( <meshBasedObjects> | <rayMarchingObjects> ) 
 <meshBasedObjects> = ( cube | sphere | pillar );
 
 <rayMarchingObjects> = ( sphere | box | roundbox | torus | link | cylinder | cone |  capsule );
+
+<Tags> =  ( apple | banana | cherry | strawberry | grape | lemon | kiwi | melon | orange | peach );
 
 //<property> = ( shape | color );
 //(new  <rayMarchingObjects> <operation> <rayMarchingObjects>)

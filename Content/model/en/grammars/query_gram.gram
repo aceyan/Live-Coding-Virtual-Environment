@@ -7,8 +7,9 @@ grammar check;
   * @example length = 3: query mesh based
   */
 
-public <final_rule> =    query <Tags> ;
+public <final_rule> =    query (<Tags> | <FuritTags>) ;
 						
 
 
 <Tags> = ( mesh based | ray marching | big flocking | small flocking | area fog );
+<FuritTags> =  ( apple | banana | cherry | strawberry | grape | lemon | kiwi | melon | orange | peach );
