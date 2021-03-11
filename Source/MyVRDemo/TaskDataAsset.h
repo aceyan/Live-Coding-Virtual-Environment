@@ -36,11 +36,10 @@ struct FTaskStepData
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		int32 Id;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (MultiLine = true))
 		FString Name;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		FString Description;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (MultiLine = true))
 		FString Tips;
 	//
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -57,7 +56,7 @@ struct FTaskData
 		int32 Id;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		FString Name;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (MultiLine = true))
 		FString Description;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		TArray<FTaskStepData> TaskStepList;
