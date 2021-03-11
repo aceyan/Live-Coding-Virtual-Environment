@@ -26,7 +26,9 @@ enum class ETaskTypes : uint8
 	ScaleRayMarching      UMETA(DisplayName = "ScaleRayMarching"),
 	ScaleCube      UMETA(DisplayName = "ScaleCube"),
 	QueryResultUpdate            UMETA(DisplayName = "QueryResultUpdate"),
-	TagsUpdate              UMETA(DisplayName = "TagsUpdate")
+	TagsUpdate              UMETA(DisplayName = "TagsUpdate"),
+	AdjustSmallFlocking       UMETA(DisplayName = "AdjustSmallFlocking"),
+	AdjustBigFlocking             UMETA(DisplayName = "AdjustBigFlocking")
 };
 
 USTRUCT(BlueprintType)
@@ -34,8 +36,6 @@ struct FTaskStepData
 {
 	GENERATED_USTRUCT_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		int32 Id;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (MultiLine = true))
 		FString Name;
 		FString Description;
@@ -52,8 +52,6 @@ struct FTaskData
 {
 	GENERATED_USTRUCT_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		int32 Id;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		FString Name;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (MultiLine = true))
