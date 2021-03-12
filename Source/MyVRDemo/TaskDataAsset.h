@@ -25,10 +25,12 @@ enum class ETaskTypes : uint8
 	ChangeColorRayMarching      UMETA(DisplayName = "ChangeColorRayMarching"),
 	ScaleRayMarching      UMETA(DisplayName = "ScaleRayMarching"),
 	ScaleCube      UMETA(DisplayName = "ScaleCube"),
-	QueryResultUpdate            UMETA(DisplayName = "QueryResultUpdate"),
+	QuerySuccessUpdate            UMETA(DisplayName = "QuerySuccessUpdate"),
 	TagsUpdate              UMETA(DisplayName = "TagsUpdate"),
 	AdjustSmallFlocking       UMETA(DisplayName = "AdjustSmallFlocking"),
-	AdjustBigFlocking             UMETA(DisplayName = "AdjustBigFlocking")
+	AdjustBigFlocking             UMETA(DisplayName = "AdjustBigFlocking"),
+	AdjustAreaFog             UMETA(DisplayName = "AdjustAreaFog"),
+	QueryCancelUpdate            UMETA(DisplayName = "QueryCancelUpdate")
 };
 
 USTRUCT(BlueprintType)
