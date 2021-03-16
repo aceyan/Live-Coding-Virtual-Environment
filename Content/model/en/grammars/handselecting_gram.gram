@@ -22,7 +22,7 @@ public <final_rule> =   (shape to ( <meshBasedObjects> | <rayMarchingObjects> ) 
 
 <colors> = ( red | blue | white | black | yellow | green | purple | orange );
 
-<meshBasedObjects> = ( cube | sphere | pillar );
+<meshBasedObjects> = ( cube | sphere | pillar | elephant | snowman | pig | rhino | snake | lion | koala );
 
 <rayMarchingObjects> = ( sphere | box | roundbox | torus | link | cylinder | cone |  capsule );
 
