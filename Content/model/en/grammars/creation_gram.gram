@@ -17,7 +17,8 @@ public <final_rule> =   (new [ <colors> ] <meshBasedObjects>) |
 						(new <rayMarchingToken> [ <colors> ] <rayMarchingObjects>) | 
 						(create <operations>) |
 						(new area fog) |
-						(new (small | big) flocking [ for <number> ] );
+						(new (small | big) flocking [ for <number> ] ) |
+						 new fractal;
 
 
 

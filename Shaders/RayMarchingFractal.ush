@@ -1,0 +1,106 @@
+
+struct RMStrutct
+{
+
+	float sdMandelbulb(float3 pos, float IterationNum, float PowerNum, float SphereRadius)
+	{
+		float power = PowerNum;
+		float scale = SphereRadius * 2.0 / 3.0;
+		float3 z = pos / scale;
+		float dr = 1.0;
+		float r = 0.0;
+		for (int i = 0; i < IterationNum; i++){
+			r = length(z);
+			if (r> 2.0) break;
+			// Convert to Polar Coordinates
+			float theta = acos(z.z/r);
+			float phi = atan(z.y/z.x);
+			dr =  pow(r, power-1.0)*power*dr+1.0;
+			// Scale and Rotate the Point
+			float zr = pow(r, power);
+			theta = theta*power;
+			phi = phi*power;
+			// Convert Back to Cartesian Coordinates
+			z = zr*float3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
+			z+= (pos/ scale);
+		}
+		return 0.5*log(r)*r/dr;
+	}
+	
+	float3 sdMandelbulbNormal(float3 p , float IterationNum, float PowerNum, float SphereRadius)
+	{
+		float2 offset = float2(0.01, 0);
+		return normalize(float3(
+		sdMandelbulb(p + offset.xyy, IterationNum, PowerNum ,  SphereRadius) -  sdMandelbulb(p - offset.xyy, IterationNum, PowerNum ,  SphereRadius),
+		sdMandelbulb(p + offset.yxy, IterationNum, PowerNum ,  SphereRadius) -  sdMandelbulb(p - offset.yxy, IterationNum, PowerNum ,  SphereRadius),
+		sdMandelbulb(p + offset.yyx, IterationNum, PowerNum ,  SphereRadius) -  sdMandelbulb(p - offset.yyx, IterationNum, PowerNum ,  SphereRadius)
+		));
+	}
+
+	
+	float sphIntersect( float3 ro, float3 rd, float3 spherePos, float radius )
+	{
+	//https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
+        float3 oc = ro - spherePos;
+		float b = dot( oc, rd );
+		float c = dot( oc, oc ) - radius*radius;
+		float h = b*b - c;
+		if( h<0.0 ) return -1.0;
+		h = sqrt( h );
+		return -b - h;
+	}
+
+
+
+	
+    float4 raymarching(float3 ro, float3 rd, float t, float3 spherePos, float IterationNum, float PowerNum, float SphereRadius)
+    {
+       
+		float3 pos = ro + rd * t;
+		float scale = SphereRadius * 2.0 / 3.0;
+
+		float distsurface;
+		float3 raypos = pos;
+		float3 normal;
+		for(int j=0; j<64; j++)
+		{
+			float3 samplePos = raypos - spherePos;
+			distsurface = sdMandelbulb(samplePos, IterationNum, PowerNum, SphereRadius) * scale;
+			if(distsurface<0.1)
+			{
+				normal = sdMandelbulbNormal(samplePos, IterationNum, PowerNum, SphereRadius);
+				break;
+			}
+			raypos += rd*distsurface;
+			
+		}
+		if(distsurface<0.1)
+		{//hit
+			return float4(normal, 1.0);
+		}
+		else
+		{
+			return float4(1.0,0.1,0.1, 0.0);
+		}
+    }
+
+};
+
+RMStrutct RM;
+float4 finalCol = float4(0, 0, 0, 0);
+
+float3 ro = CameraPosition;
+float3 rd = CameraVector;
+float3 sPos = SpherePos;
+
+float dist = RM.sphIntersect(ro, rd, sPos, SphereRadius);
+
+  
+    if (dist > 0.0) {
+        finalCol = RM.raymarching(ro, rd, dist, sPos, IterationNum, PowerNum, SphereRadius);
+        //finalCol = float4(1, 0,0, 1);
+    }
+    
+    //return float4(sin(Time),0,1, finalCol.a);
+return finalCol;
+
