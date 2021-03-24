@@ -30,7 +30,8 @@ enum class ETaskTypes : uint8
 	AdjustSmallFlocking       UMETA(DisplayName = "AdjustSmallFlocking"),
 	AdjustBigFlocking             UMETA(DisplayName = "AdjustBigFlocking"),
 	AdjustAreaFog             UMETA(DisplayName = "AdjustAreaFog"),
-	QueryCancelUpdate            UMETA(DisplayName = "QueryCancelUpdate")
+	QueryCancelUpdate            UMETA(DisplayName = "QueryCancelUpdate"),
+	CreateFractal       UMETA(DisplayName = "CreateFractal")
 };
 
 USTRUCT(BlueprintType)
