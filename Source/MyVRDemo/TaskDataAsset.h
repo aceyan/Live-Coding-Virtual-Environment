@@ -47,6 +47,8 @@ struct FTaskStepData
 	//
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		ETaskTypes Type;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		bool isShowTips = true;
 };
 
 
