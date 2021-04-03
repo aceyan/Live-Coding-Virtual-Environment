@@ -7,7 +7,7 @@ grammar check;
   * @example length = 3: query mesh based
   */
 
-public <final_rule> =    query (<Tags> | <FuritTags> ) ;
+public <final_rule> =    query [(<Tags> | <FuritTags> )] ;
 						
 
 

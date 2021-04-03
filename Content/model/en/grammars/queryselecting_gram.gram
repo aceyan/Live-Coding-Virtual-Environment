@@ -16,7 +16,7 @@ public <final_rule> =   (shape to ( <meshBasedObjects> | <rayMarchingObjects> ) 
 						(turn (smaller | bigger) ) |
 						( (align | cohesion | separation) force ( increase | decrease ) ) |
 						(( length | width | height )  ( increase | decrease ) ) |
-						(tag <Tags>);
+						(tag [<Tags>]);
 						
 
 
