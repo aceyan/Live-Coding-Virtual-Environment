@@ -8,7 +8,8 @@ public class MyVRDemoTarget : TargetRules
 	public MyVRDemoTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
-
+		bForceEnableExceptions = true;
+		bOverrideBuildEnvironment = true;
 		ExtraModuleNames.AddRange( new string[] { "MyVRDemo" } );
 	}
 }
